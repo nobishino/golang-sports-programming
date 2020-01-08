@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"os"
 	"strconv"
 )
 
@@ -13,25 +14,23 @@ func main() {
 	fmt.Scan(&b)
 	fmt.Scan(&x)
 	var (
-		ok     int = 0
-		ng     int = 1000000000
-		answer int
-		mid    int
+		ok  int = 0
+		ng  int = 1000000000
+		mid int
 	)
 	if buyAble(ng) {
-		answer = ng
-	} else {
-		for math.Abs(float64(ok-ng)) > 1.0 {
-			mid = (ok + ng) / 2
-			if buyAble(mid) {
-				ok = mid
-			} else {
-				ng = mid
-			}
-		}
-		answer = ok
+		fmt.Println(ng)
+		os.Exit(0)
 	}
-	fmt.Println(answer)
+	for math.Abs(float64(ok-ng)) > 1.0 {
+		mid = (ok + ng) / 2
+		if buyAble(mid) {
+			ok = mid
+		} else {
+			ng = mid
+		}
+	}
+	fmt.Println(ok)
 }
 
 func buyAble(n int) bool {
