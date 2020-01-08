@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"strconv"
 )
 
 var a, b, x int
@@ -34,17 +35,7 @@ func main() {
 }
 
 func buyAble(n int) bool {
-	digit := calcDigit(n)
+	digit := len(strconv.Itoa(n))
 	result := x >= a*n+b*digit
-	// fmt.Println(n, result)
-	return result
-}
-
-func calcDigit(n int) int {
-	var result int = 1
-	for n > 9 {
-		n /= 10
-		result++
-	}
 	return result
 }
