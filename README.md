@@ -1,0 +1,2 @@
+# golang-sports-programming
+Golangで埋めている問題と埋めていない問題の管理のためにリポジトリを分けるのとライブラリもここに書くかも
