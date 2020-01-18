@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 )
 
 //スクロールされると動く
@@ -25,7 +26,24 @@ func main() {
 	//辞書順ソートするか
 	fmt.Println(permutations)
 	fmt.Println(len(permutations))
+	sorted := make([][]int, len(permutations))
+	copy(sorted, permutations)
+	sort.Slice(sorted, func(i, j int) bool {
+		c++
+		for x := 0; x < len(permutations[i]); x++ {
+			if sorted[i][x] != sorted[j][x] {
+				return sorted[i][x] < sorted[j][x]
+			}
+		}
+		return true
+	})
+	for i := 0; i < len(permutations); i++ {
+		fmt.Println(permutations[i], sorted[i])
+	}
+	fmt.Println(c)
 }
+
+var c int
 
 func initialize(length int) (result []int) {
 	result = make([]int, length)
