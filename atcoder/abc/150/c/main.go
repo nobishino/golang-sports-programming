@@ -3,48 +3,79 @@ package main
 import (
 	"fmt"
 	"sort"
+	"strconv"
+	"strings"
 )
 
-//スクロールされると動く
-//permutations 意味　順列
-//欠陥では...
-//フォローしなければOK
-//フォローってなんだっけ
-//とりあえずファイルエクスプローラから別なファイル開けばフォローされないような気がする　知らんけど
 var permutations [][]int = make([][]int, 0, 10)
 
-//これ今ほかに誰かいるのかな only me
-//See -> Session Details > Participants
-//make sense, well noted
 func main() {
-	fmt.Println("Hello")
-	maxDepth := 4
+	var maxDepth int
+	var p, q []int
+	fmt.Scan(&maxDepth)
+	p = make([]int, maxDepth)
+	q = make([]int, maxDepth)
+	for i := 0; i < maxDepth; i++ {
+		var x int
+		fmt.Scan(&x)
+		p[i] = x - 1
+	}
+	for i := 0; i < maxDepth; i++ {
+		var x int
+		fmt.Scan(&x)
+		q[i] = x - 1
+	}
+
 	for i := 0; i < maxDepth; i++ {
 		call(i, 0, initialize(maxDepth))
 	}
 	//なんかアレだけど一応順列は出た
-	//辞書順ソートするか
-	fmt.Println(permutations)
-	fmt.Println(len(permutations))
 	sorted := make([][]int, len(permutations))
 	copy(sorted, permutations)
-	sort.Slice(sorted, func(i, j int) bool {
-		c++
-		for x := 0; x < len(permutations[i]); x++ {
-			if sorted[i][x] != sorted[j][x] {
-				return sorted[i][x] < sorted[j][x]
-			}
-		}
-		return true
-	})
-	for i := 0; i < len(permutations); i++ {
-		fmt.Println(permutations[i], sorted[i])
+	/*sort.Slice was introdued Go v1.8 according to godoc*/
+	// sort.Slice(sorted, func(i, j int) bool {
+	// 	for x := 0; x < len(permutations[i]); x++ {
+	// 		if sorted[i][x] != sorted[j][x] {
+	// 			return sorted[i][x] < sorted[j][x]
+	// 		}
+	// 	}
+	// 	return false
+	// })
+	perms := Perms(sorted)
+	sort.Sort(perms)
+
+	index := make(map[string]int)
+	for i, v := range perms {
+		index[toS(v)] = i
 	}
-	fmt.Println(c)
+	answer := absInt(index[toS(p)] - index[toS(q)])
+	fmt.Println(answer)
 }
 
-var c int
+type Perms [][]int
 
+func (p Perms) Len() int {
+	return len(p)
+}
+func (p Perms) Less(i, j int) bool {
+	for x := 0; x < len((p)[i]); x++ {
+		if (p)[i][x] != (p)[j][x] {
+			return (p)[i][x] < (p)[j][x]
+		}
+	}
+	return false
+}
+
+func (p Perms) Swap(i, j int) {
+	(p)[i], (p)[j] = (p)[j], (p)[i]
+}
+
+func absInt(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
 func initialize(length int) (result []int) {
 	result = make([]int, length)
 	for i := 0; i < length; i++ {
@@ -70,4 +101,13 @@ func call(v int, depth int, path []int) {
 			call(i, depth+1, copiedPath)
 		}
 	}
+}
+
+func toS(perm []int) string {
+	chars := make([]string, len(perm))
+	for i, v := range perm {
+		chars[i] = strconv.Itoa(v)
+	}
+	// fmt.Println(chars)
+	return strings.Join(chars, "")
 }
