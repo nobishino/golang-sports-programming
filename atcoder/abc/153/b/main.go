@@ -1,18 +1,30 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+)
 
 var (
 	H, N, sum int
 	a         []int
+	line      string
+	word      string
 )
 
 func main() {
-	fmt.Scan(&H)
-	fmt.Scan(&N)
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Split(bufio.ScanWords)
+	scanner.Scan()
+	H, _ = strconv.Atoi(scanner.Text())
+	scanner.Scan()
+	N, _ = strconv.Atoi(scanner.Text())
 	a = make([]int, N)
 	for i := 0; i < N; i++ {
-		fmt.Scan(&(a[i]))
+		scanner.Scan()
+		a[i], _ = strconv.Atoi(scanner.Text())
 	}
 	for _, v := range a {
 		sum += v
