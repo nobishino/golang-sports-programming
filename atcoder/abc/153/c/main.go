@@ -10,9 +10,23 @@ import (
 
 var (
 	n, k int
-	h    []int
+	h    Ints
 	ans  int
 )
+
+type Ints []int
+
+func (s Ints) Len() int {
+	return len(s)
+}
+
+func (s Ints) Less(i, j int) bool {
+	return s[i] > s[j]
+}
+
+func (s Ints) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
 
 func main() {
 	n = nextInt()
@@ -21,8 +35,8 @@ func main() {
 	for i := 0; i < n; i++ {
 		h[i] = nextInt()
 	}
-	sort.Ints(h)
-	for i := 0; i < n-k; i++ {
+	sort.Sort(h)
+	for i := k; i < n; i++ {
 		ans += h[i]
 	}
 	fmt.Println(ans)
