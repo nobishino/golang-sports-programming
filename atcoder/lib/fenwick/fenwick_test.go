@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func ExampleBIT() {
+func ExampleBITAccumulate() {
 	bit := NewBIT(5)
 	for i := 0; i < 5; i++ {
 		bit.Add(i, i) //0,1,2,3,4
@@ -15,6 +15,24 @@ func ExampleBIT() {
 	//10
 	fmt.Println(bit.Accumulate(3))
 	//6
+}
+
+func ExampleBITSum() {
+	bit := NewBIT(5)
+	for i := 0; i < 5; i++ {
+		bit.Add(i, i) //0,1,2,3,4
+	}
+	fmt.Println(bit.Sum(2, 4))
+	//Output:
+	//9
+}
+
+func TestAddTooLargeIndex(t *testing.T) {
+	bit := NewBIT(5)
+	bit.Add(10, 0) //No Panic, No Exception
+	if bit.Accumulate(4) != 0 {
+		t.Errorf("Total sum should be 0, actual %v", bit.Accumulate(4))
+	}
 }
 
 func TestAccumulate(t *testing.T) {
@@ -27,7 +45,7 @@ func TestAccumulate(t *testing.T) {
 	}
 }
 
-func TestAccumulateForWrongInput(t *testing.T) {
+func TestAccumulateForTooLargeInput(t *testing.T) {
 	bit := NewBIT(5)
 	for i := 0; i < 5; i++ {
 		bit.Add(i, i+1) //1,2,3,4,5

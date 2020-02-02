@@ -58,16 +58,16 @@ func (p Perms) Len() int {
 	return len(p)
 }
 func (p Perms) Less(i, j int) bool {
-	for x := 0; x < len((p)[i]); x++ {
-		if (p)[i][x] != (p)[j][x] {
-			return (p)[i][x] < (p)[j][x]
+	for x := 0; x < len(p[i]); x++ {
+		if p[i][x] != p[j][x] {
+			return p[i][x] < p[j][x]
 		}
 	}
 	return false
 }
 
 func (p Perms) Swap(i, j int) {
-	(p)[i], (p)[j] = (p)[j], (p)[i]
+	p[i], p[j] = p[j], p[i]
 }
 
 func absInt(x int) int {
