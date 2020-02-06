@@ -9,22 +9,19 @@ import (
 
 var a, b int
 
+func readVariables() {
+	a, b = nextInt(), nextInt()
+}
+
 func main() {
-	a = nextInt()
-	b = nextInt()
-	var answer, char string
-	var time int
-	if a < b {
-		char = strconv.Itoa(a)
-		time = b
-	} else {
-		char = strconv.Itoa(b)
-		time = a
+	readVariables()
+	if a > b {
+		a, b = b, a
 	}
-	for i := 0; i < time; i++ {
-		answer += char
+	for i := 0; i < b; i++ {
+		fmt.Print(a)
 	}
-	fmt.Println(answer)
+	fmt.Println()
 }
 
 var scanner *bufio.Scanner
