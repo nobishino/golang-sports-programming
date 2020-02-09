@@ -47,3 +47,39 @@ func ModPow(base, exponent, modulo int) (result int) {
 	}
 	return
 }
+
+//Gcd は、引数の整数全ての最大公約数を返します。
+func Gcd(vals ...int) (result int) {
+	if len(vals) == 0 {
+		return
+	}
+	result = vals[0]
+	for i := 1; i < len(vals); i++ {
+		result = gcd(result, vals[i])
+	}
+	return
+}
+
+func gcd(x, y int) int {
+	x, y = AbsInt(x), AbsInt(y)
+	for y > 0 {
+		x, y = y, x%y
+	}
+	return x
+}
+
+//Lcm は、与えられた整数の最小公倍数を返します。
+func Lcm(vals ...int) (result int) {
+	if len(vals) == 0 {
+		return
+	}
+	result = vals[0]
+	for i := 1; i < len(vals); i++ {
+		result = lcm(result, vals[i])
+	}
+	return
+}
+
+func lcm(x, y int) int {
+	return x * y / gcd(x, y)
+}
