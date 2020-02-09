@@ -27,6 +27,16 @@ func ExampleModPow() {
 	//78125
 }
 
+func ExampleAbsInt() {
+	fmt.Println(AbsInt(3))
+	fmt.Println(AbsInt(-4))
+	fmt.Println(AbsInt(0))
+	//Output:
+	//3
+	//4
+	//0
+}
+
 func TestModPow1(t *testing.T) {
 	if ModPow(3, 400, 1000000007) != 978888738 {
 		t.Fatalf("ModPow(3,400,1000000007) should be %d, actual value = %d", 978888738, ModPow(3, 400, 1000000007))

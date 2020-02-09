@@ -18,6 +18,14 @@ func MaxInt(x, y int) int {
 	}
 }
 
+//AbsInt は、整数の絶対値を返します。
+func AbsInt(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
 //ModPow は整数の累乗関数で、剰余もサポートします。
 //base^exponentの値をmoduleで割った余りを返します。
 //moduloが1以下の場合には、剰余演算をしません。
