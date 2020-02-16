@@ -4,51 +4,44 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"sort"
 	"strconv"
 )
 
-var (
-	N      int
-	S      Names
-	cnt    map[string]int
-	maxCnt int
-)
+var N int
 
 func readVariables() {
 	N = nextInt()
-	S = make(Names, 0)
-	cnt = make(map[string]int)
-}
-
-type Names []string
-
-func (n Names) Len() int {
-	return len(n)
-}
-func (n Names) Less(i, j int) bool {
-	return n[i] < n[j]
-}
-func (n Names) Swap(i, j int) {
-	n[i], n[j] = n[j], n[i]
 }
 
 func main() {
 	readVariables()
-	for i := 0; i < N; i++ {
-		name := nextStr()
-		cnt[name]++
-		maxCnt = MaxInt(cnt[name], maxCnt)
+	// fmt.Println(digitSum(N))
+	// fmt.Println(solve(N))
+	for i := 1; i < N; i++ {
+		// if i%10 == 0 {
+		fmt.Println(i, solve(i))
+		// }
 	}
-	for k, v := range cnt {
-		if v == maxCnt {
-			S = append(S, k)
-		}
+	fmt.Println()
+}
+
+func solve(n int) (result int) {
+	result = 1234567890123456789
+	for x := n; x < 100*n; x++ {
+		var cand int = 0
+		cand += digitSum(x)
+		cand += digitSum(x - n)
+		result = MinInt(cand, result)
 	}
-	sort.Sort(S)
-	for _, v := range S {
-		fmt.Println(v)
+	return
+}
+
+func digitSum(x int) (result int) {
+	for x > 0 {
+		result += x % 10
+		x /= 10
 	}
+	return
 }
 
 /* 以下、テンプレート*/

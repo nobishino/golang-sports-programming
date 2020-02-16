@@ -2,16 +2,51 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 )
 
+var (
+	N int
+	A []int
+)
+
 func readVariables() {
-
+	N = nextInt()
+	A = make([]int, N)
+	for i := 0; i < N; i++ {
+		A[i] = nextInt()
+	}
 }
-
 func main() {
 	readVariables()
+	if judge(A) {
+		fmt.Println("APPROVED")
+	} else {
+		fmt.Println("DENIED")
+	}
+}
+func judge(a []int) bool {
+	for _, v := range a {
+		if !ok(v) {
+			return false
+		}
+	}
+	return true
+}
+
+func ok(x int) bool {
+	if x%2 == 1 {
+		return true
+	}
+	if x%3 == 0 {
+		return true
+	}
+	if x%5 == 0 {
+		return true
+	}
+	return false
 }
 
 /* 以下、テンプレート*/

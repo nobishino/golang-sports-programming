@@ -2,16 +2,35 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 )
 
-func readVariables() {
+var (
+	A, B, C, ans int
+)
 
+func readVariables() {
+	A, B, C = nextInt(), nextInt(), nextInt()
 }
 
 func main() {
 	readVariables()
+	if A == B {
+		ans++
+	}
+	if B == C {
+		ans++
+	}
+	if C == A {
+		ans++
+	}
+	if ans == 1 {
+		fmt.Println("Yes")
+	} else {
+		fmt.Println("No")
+	}
 }
 
 /* 以下、テンプレート*/

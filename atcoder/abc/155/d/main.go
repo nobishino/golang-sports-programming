@@ -2,12 +2,98 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
+	"sort"
 	"strconv"
 )
 
-func readVariables() {
+var (
+	N, K int
+	A    Nums
+)
 
+type Nums []int
+
+func (n Nums) Len() int           { return len(n) }
+func (n Nums) Less(i, j int) bool { return n[i] < n[j] }
+func (n Nums) Swap(i, j int)      { n[i], n[j] = n[j], n[i] }
+
+func readVariables() {
+	N, K = nextInt(), nextInt()
+	A = make(Nums, N)
+	for i := 0; i < N; i++ {
+		A[i] = nextInt()
+	}
+	sort.Sort(A)
+	ng := -1234567890123456789 //-10^18
+	ok := 1234567890123456789
+	for AbsInt(ok-ng) > 1 {
+		mid := (ok + ng) / 2
+		v := f(mid)
+		// fmt.Println(mid, v)
+		if v >= K {
+			ok = mid
+		} else {
+			ng = mid
+		}
+	}
+	// fmt.Println("g(-4, A[0])", -4, A[0], "=", g(-4, A[0]))
+	fmt.Println(ok)
+}
+
+func g(x, v int) int {
+	left, right := v*A[0], v*A[N-1]
+	var ok, ng, result int
+	if v >= 0 {
+		if right <= x {
+			return N - 1
+		}
+		if left > x {
+			return 0
+		}
+		ok, ng = 0, N-1
+	} else {
+		if left <= x {
+			return N - 1
+		}
+		if right > x {
+			return 0
+		}
+		ok, ng = N-1, 0
+	}
+	for AbsInt(ok-ng) > 1 {
+		mid := (ok + ng) / 2
+		w := A[mid] * v
+		if w <= x {
+			ok = mid
+		} else {
+			ng = mid
+		}
+	}
+	w := A[ok]
+	if v >= 0 {
+		result = ok + 1
+		if w >= v {
+			result--
+		}
+	} else {
+		result = N - ok
+		if w <= v {
+			result--
+		}
+	}
+	// fmt.Println("g(x,v)", x, v, result)
+	return result
+}
+
+//f returns #{p <- Pairs | p <= x}
+func f(x int) (y int) {
+	for _, v := range A {
+		y += g(x, v)
+	}
+	y /= 2
+	return
 }
 
 func main() {
