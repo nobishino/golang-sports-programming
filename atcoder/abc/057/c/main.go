@@ -7,24 +7,26 @@ import (
 	"strconv"
 )
 
-var A, B, X int
+var N int
 
 func readVariables() {
-	A, B, X = nextInt(), nextInt(), nextInt()
+	N = nextInt()
 }
 
 func main() {
 	readVariables()
-	ok, ng := 0, 1000000001
-	for AbsInt(ok-ng) > 1 {
-		mid := (ok + ng) / 2
-		if A*mid+B*len(strconv.Itoa(mid)) <= X {
-			ok = mid
-		} else {
-			ng = mid
+	answer := 1234567890123
+	upperBound := 1000000
+	for i := 1; i < upperBound; i++ {
+		if N%i == 0 {
+			answer = MinInt(f(i, N/i), answer)
 		}
 	}
-	fmt.Println(ok)
+	fmt.Println(answer)
+}
+
+func f(x, y int) int {
+	return MaxInt(len(strconv.Itoa(x)), len(strconv.Itoa(y)))
 }
 
 /* 以下、テンプレート*/
@@ -55,6 +57,7 @@ func nextStr() string {
 	}
 	return scanner.Text()
 }
+
 func MinInt(x, y int) int {
 	if x < y {
 		return x

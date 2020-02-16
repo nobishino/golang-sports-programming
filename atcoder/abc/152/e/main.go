@@ -7,24 +7,29 @@ import (
 	"strconv"
 )
 
-var A, B, X int
+var (
+	N      int
+	A      []int
+	answer int
+	MOD    int = 1000000007
+)
 
 func readVariables() {
-	A, B, X = nextInt(), nextInt(), nextInt()
+	N = nextInt()
+	A = make([]int, N)
+	for i := 0; i < N; i++ {
+		A[i] = nextInt()
+	}
 }
 
 func main() {
 	readVariables()
-	ok, ng := 0, 1000000001
-	for AbsInt(ok-ng) > 1 {
-		mid := (ok + ng) / 2
-		if A*mid+B*len(strconv.Itoa(mid)) <= X {
-			ok = mid
-		} else {
-			ng = mid
-		}
+	lcm := Lcm(A)
+	for _, v := range A {
+		answer += lcm * ModPow(v, MOD-2, MOD)
+		answer %= MOD
 	}
-	fmt.Println(ok)
+	fmt.Println(answer)
 }
 
 /* 以下、テンプレート*/
@@ -49,12 +54,7 @@ func nextInt() int {
 	return num
 }
 
-func nextStr() string {
-	if !scanner.Scan() {
-		panic("No more token.")
-	}
-	return scanner.Text()
-}
+//MinInt は、2つの整数を受け取り、最小値を返す。
 func MinInt(x, y int) int {
 	if x < y {
 		return x
@@ -63,13 +63,50 @@ func MinInt(x, y int) int {
 	}
 }
 
-//MaxInt は、2つの整数を受け取り、最大値を返します。
+//MaxInt は、2つの整数を受け取り、最大値を返す。
 func MaxInt(x, y int) int {
 	if x < y {
 		return y
 	} else {
 		return x
 	}
+}
+
+//Gcd は、引数の整数全ての最大公約数を返します。
+func Gcd(vals ...int) (result int) {
+	if len(vals) == 0 {
+		return
+	}
+	result = vals[0]
+	for i := 1; i < len(vals); i++ {
+		result = gcd(result, vals[i])
+	}
+	return
+}
+
+func gcd(x, y int) int {
+	x, y = AbsInt(x), AbsInt(y)
+	for y > 0 {
+		x, y = y, x%y
+	}
+	return x
+}
+
+//Lcm は、与えられた整数の最小公倍数を返します。
+func Lcm(vals []int) (result int) {
+	if len(vals) == 0 {
+		return
+	}
+	result = vals[0]
+	for i := 1; i < len(vals); i++ {
+		result = lcm(result, vals[i])
+		result %= MOD
+	}
+	return
+}
+
+func lcm(x, y int) int {
+	return x * y / gcd(x, y)
 }
 
 //AbsInt は、整数の絶対値を返します。
@@ -100,40 +137,4 @@ func ModPow(base, exponent, modulo int) (result int) {
 		exponent /= 2
 	}
 	return
-}
-
-//Gcd は、引数の整数全ての最大公約数を返します。
-func Gcd(vals ...int) (result int) {
-	if len(vals) == 0 {
-		return
-	}
-	result = vals[0]
-	for i := 1; i < len(vals); i++ {
-		result = gcd(result, vals[i])
-	}
-	return
-}
-
-func gcd(x, y int) int {
-	x, y = AbsInt(x), AbsInt(y)
-	for y > 0 {
-		x, y = y, x%y
-	}
-	return x
-}
-
-//Lcm は、与えられた整数の最小公倍数を返します。
-func Lcm(vals ...int) (result int) {
-	if len(vals) == 0 {
-		return
-	}
-	result = vals[0]
-	for i := 1; i < len(vals); i++ {
-		result = lcm(result, vals[i])
-	}
-	return
-}
-
-func lcm(x, y int) int {
-	return x * y / gcd(x, y)
 }
