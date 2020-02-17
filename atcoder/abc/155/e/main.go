@@ -2,16 +2,48 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 )
 
-func readVariables() {
+var (
+	N   string
+	L   int
+	M   int = 1001001
+	dp  [1001001][2]int
+	INF int = 1234567890123456789
+)
 
+func readVariables() {
+	N = "0" + nextStr()
+	L = len(N)
+	for i := 0; i < M; i++ {
+		for j := 0; j < 2; j++ {
+			dp[i][j] = INF
+		}
+	}
+	dp[0][0] = 0
+}
+
+func getDigitAt(i int) int {
+	return int(N[i-1] - '0')
 }
 
 func main() {
 	readVariables()
+	for i := 0; i < L; i++ {
+		digit := getDigitAt(i + 1)
+		//0->0
+		dp[i+1][0] = MinInt(dp[i][0]+digit, dp[i+1][0])
+		//0->1
+		dp[i+1][1] = MinInt(dp[i][0]+digit+1, dp[i+1][1])
+		//1->0
+		dp[i+1][0] = MinInt(dp[i][1]+10-digit, dp[i+1][0])
+		//1->1
+		dp[i+1][1] = MinInt(dp[i][1]+9-digit, dp[i+1][1])
+	}
+	fmt.Println(dp[L][0])
 }
 
 /* 以下、テンプレート*/
@@ -19,8 +51,9 @@ func main() {
 var scanner *bufio.Scanner
 
 func init() {
+	Max := 1001001
 	scanner = bufio.NewScanner(os.Stdin)
-	scanner.Buffer(make([]byte, 0, 1000000), 1000000)
+	scanner.Buffer(make([]byte, 0, Max), Max)
 	scanner.Split(bufio.ScanWords)
 }
 
