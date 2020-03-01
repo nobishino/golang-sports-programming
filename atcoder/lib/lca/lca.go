@@ -87,7 +87,7 @@ func (t *RootedTree) Lca(v, w int) int {
 		v, w = w, v //ensure v >= w, v is not shallower than w
 	}
 	for k := 0; k < t.maxLogSize; k++ {
-		if (t.Depth[v]-t.Depth[w])>>k&1 == 1 {
+		if (t.Depth[v]-t.Depth[w])>>uint64(k)&1 == 1 {
 			v = t.Parent[v][k]
 		}
 	}
