@@ -5,48 +5,41 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 )
 
 var (
 	N, M int
-	d    [5]string
+	s    [5]int
+	c    [5]string
 )
 
 func main() {
 	readVariables()
-	//N=1 , 0 attention!
-	answer := 0
-	for i := 0; i < M; i++ {
-		s, c := nextInt(), nextStr()
-		if d[s-1] != "" && d[s-1] != c {
-			answer = -1
-			break
-		} else {
-			d[s-1] = c
+	answer := -1
+Outer:
+	for i := 0; i < ModPow(10, N, 0); i++ {
+		digits := strconv.Itoa(i)
+		if len(digits) != N {
+			continue
 		}
-	}
-	if (N > 1 && d[0] == "0") || answer == -1 {
-		answer = -1
-	} else {
-		for i := 0; i < N; i++ {
-			if d[i] == "" {
-				if i != 0 || N == 1 {
-					d[i] = "0"
-				} else {
-					d[i] = "1"
-				}
+		for j := 0; j < M; j++ {
+			digit := digits[s[j] : s[j]+1]
+			if digit != c[j] {
+				continue Outer
 			}
 		}
-		answer, _ = strconv.Atoi(strings.Join(d[0:N], ""))
+		if answer == -1 {
+			answer = i
+		}
+		answer = MinInt(answer, i)
 	}
 	fmt.Println(answer)
 }
 
 func readVariables() {
 	N, M = nextInt(), nextInt()
-	for i := 0; i < 5; i++ {
-		d[i] = ""
+	for i := 0; i < M; i++ {
+		s[i], c[i] = nextInt(), nextStr()
 	}
 }
 
