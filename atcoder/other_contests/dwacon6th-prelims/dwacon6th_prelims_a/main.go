@@ -2,16 +2,33 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 )
 
-func readVariables() {
-
-}
+var (
+	N     int
+	s     [1000]string
+	index map[string]int = make(map[string]int)
+	cumT  [1000]int
+	X     string
+)
 
 func main() {
 	readVariables()
+	answer := cumT[N] - cumT[index[X]]
+	fmt.Println(answer)
+}
+
+func readVariables() {
+	N = nextInt()
+	for i := 0; i < N; i++ {
+		s, t := nextStr(), nextInt()
+		cumT[i+1] = cumT[i] + t
+		index[s] = i + 1
+	}
+	X = nextStr()
 }
 
 /* Template */

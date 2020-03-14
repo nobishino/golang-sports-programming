@@ -2,54 +2,29 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 )
 
 var (
-	H, W int
-	a    [100][100]int
+	A, B, C int
 )
 
-func readVariables() {
-	H, W = nextInt(), nextInt()
-	// for i := 0; i < H; i++ {
-	// 	for j := 0; j < W; j++ {
-	// 		fmt.Println(i, j)
-	// 		a[i][j] = nextInt()
-	// 	}
-	// }
-}
-
 func main() {
-	// readVariables()
-	// fmt.Println(a)
-	// answer := "Yes"
-	// for j := 0; j < W; j++ {
-	// 	if !col(j) {
-	// 		answer = "No"
-	// 	}
-	// }
-	// fmt.Println(answer)
+	readVariables()
+	var answer string
+	if A+B+C >= 22 {
+		answer = "bust"
+	} else {
+		answer = "win"
+	}
+	fmt.Println(answer)
 }
 
-func col(j int) bool {
-	for k := 0; k < H; k++ {
-		if check(j, k) {
-			return true
-		}
-	}
-	return false
-}
+func readVariables() {
+	A, B, C = nextInt(), nextInt(), nextInt()
 
-func check(j, k int) bool {
-	for l := 0; l < H; l++ {
-		kk := (l + k) % H
-		if a[l][0] != a[kk][j] {
-			return false
-		}
-	}
-	return true
 }
 
 /* Template */
