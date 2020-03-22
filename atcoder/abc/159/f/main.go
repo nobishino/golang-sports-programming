@@ -2,47 +2,36 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 )
 
+var MOD = 998244353
 var (
-	N   int
-	A   []int
-	cnt map[int]int = make(map[int]int)
+	N, S int
+	A    [10000]int
+	dp   [4000][4000]int
 )
 
 func main() {
 	readVariables()
-	s := 0
-	for _, v := range cnt {
-		s += c2(v)
-	}
-	for i := 0; i < N; i++ {
-		ans := s - delta(cnt[A[i]])
-		fmt.Println(ans)
+	dp[0][0] = 1
+	for i := 1; i < N+1; i++ {
+		for s := 0; s <= S; s++ {
+			dp[i][s] += dp[i-1][s]
+			d := s - A[i-1]
+			if d >= 0 {
+				dp[i][s] = dp[i-1][d]
+			}
+		}
 	}
 }
 
 func readVariables() {
-	N = nextInt()
-	A = make([]int, N)
+	N, S = nextInt(), nextInt()
 	for i := 0; i < N; i++ {
 		A[i] = nextInt()
-		cnt[A[i]]++
 	}
-}
-
-func c2(x int) int {
-	if x < 2 {
-		return 0
-	}
-	return x * (x - 1) / 2
-}
-
-func delta(ct int) int {
-	return c2(ct) - c2(ct-1)
 }
 
 /* Template */
