@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 )
@@ -10,21 +11,30 @@ var MOD = 998244353
 var (
 	N, S int
 	A    [10000]int
-	dp   [4000][4000]int
+	dp   []int
 )
 
 func main() {
 	readVariables()
-	dp[0][0] = 1
-	for i := 1; i < N+1; i++ {
-		for s := 0; s <= S; s++ {
-			dp[i][s] += dp[i-1][s]
-			d := s - A[i-1]
-			if d >= 0 {
-				dp[i][s] = dp[i-1][d]
+	dp = make([]int, S+1)
+	dp[0] = 1
+	answer := 0
+	for i := 0; i < N; i++ {
+		if i > 0 {
+			dp[0]++
+			dp[0] %= MOD
+		}
+		for j := S; j >= 0; j-- {
+			if j+A[i] <= S {
+				dp[j+A[i]] += dp[j]
+				dp[j+A[i]] %= MOD
 			}
 		}
+		// fmt.Println(dp)
+		answer += dp[S]
+		answer %= MOD
 	}
+	fmt.Println(answer)
 }
 
 func readVariables() {
