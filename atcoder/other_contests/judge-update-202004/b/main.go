@@ -2,16 +2,44 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
+	"sort"
 	"strconv"
+)
+
+var (
+	r, b sort.IntSlice
+	N    int
 )
 
 func main() {
 	readVariables()
+	for _, v := range r {
+		fmt.Println(v)
+	}
+	for _, v := range b {
+		fmt.Println(v)
+	}
 }
 
 func readVariables() {
-
+	N = nextInt()
+	for i := 0; i < N; i++ {
+		x := nextInt()
+		c := nextStr()
+		if c == "R" {
+			r = append(r, x)
+		} else {
+			b = append(b, x)
+		}
+	}
+	sort.Slice(r, func(i, j int) bool {
+		return r[i] < r[j]
+	})
+	sort.Slice(b, func(i, j int) bool {
+		return b[i] < b[j]
+	})
 }
 
 /* Template */

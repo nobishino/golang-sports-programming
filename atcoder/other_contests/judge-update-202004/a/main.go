@@ -2,16 +2,28 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 )
 
+var S, L, R int
+
 func main() {
 	readVariables()
+	var answer int
+	if L <= S && S <= R {
+		answer = S
+	} else if S < L {
+		answer = L
+	} else {
+		answer = R
+	}
+	fmt.Println(answer)
 }
 
 func readVariables() {
-
+	S, L, R = nextInt(), nextInt(), nextInt()
 }
 
 /* Template */

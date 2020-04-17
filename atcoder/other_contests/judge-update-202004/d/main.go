@@ -2,16 +2,50 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 )
 
+var (
+	N, Q int
+	A    []int
+	S    []int
+)
+
 func main() {
 	readVariables()
+	for i := 1; i < N; i++ {
+		A[i] = Gcd(A[i-1], A[i])
+	}
+	for q := 0; q < Q; q++ {
+		if x := Gcd(S[q], A[N-1]); x != 1 {
+			fmt.Println(x)
+			continue
+		}
+		ok, ng := N-1, -1
+		for AbsInt(ok-ng) > 1 {
+			mid := (ok + ng) / 2
+			if Gcd(S[q], A[mid]) == 1 {
+				ok = mid
+			} else {
+				ng = mid
+			}
+		}
+		fmt.Println(ok + 1)
+	}
 }
 
 func readVariables() {
-
+	N, Q = nextInt(), nextInt()
+	A = make([]int, N)
+	S = make([]int, Q)
+	for i := 0; i < N; i++ {
+		A[i] = nextInt()
+	}
+	for i := 0; i < Q; i++ {
+		S[i] = nextInt()
+	}
 }
 
 /* Template */
