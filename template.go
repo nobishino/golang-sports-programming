@@ -7,25 +7,14 @@ import (
 	"strconv"
 )
 
-var (
-	keys = []string{"AC", "WA", "TLE", "RE"}
-	m    = make(map[string]int)
-)
+var ()
 
 func main() {
 	defer writer.Flush()
 	readVariables()
-	for _, k := range keys {
-		fmt.Printf("%s x %v\n", k, m[k])
-	}
 }
 
 func readVariables() {
-	N := nextInt()
-	for i := 0; i < N; i++ {
-		key := nextStr()
-		m[key]++
-	}
 }
 
 /* Template */
@@ -116,40 +105,4 @@ func ModPow(base, exponent, modulo int) (result int) {
 		exponent /= 2
 	}
 	return
-}
-
-//Gcd
-func Gcd(vals ...int) (result int) {
-	if len(vals) == 0 {
-		return
-	}
-	result = vals[0]
-	for i := 1; i < len(vals); i++ {
-		result = gcd(result, vals[i])
-	}
-	return
-}
-
-func gcd(x, y int) int {
-	x, y = AbsInt(x), AbsInt(y)
-	for y > 0 {
-		x, y = y, x%y
-	}
-	return x
-}
-
-//Lcm
-func Lcm(vals ...int) (result int) {
-	if len(vals) == 0 {
-		return
-	}
-	result = vals[0]
-	for i := 1; i < len(vals); i++ {
-		result = lcm(result, vals[i])
-	}
-	return
-}
-
-func lcm(x, y int) int {
-	return x * y / gcd(x, y)
 }

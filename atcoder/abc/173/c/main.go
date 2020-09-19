@@ -8,23 +8,80 @@ import (
 )
 
 var (
-	keys = []string{"AC", "WA", "TLE", "RE"}
-	m    = make(map[string]int)
+	H, W, K    int
+	black, red [][]bool
 )
 
 func main() {
 	defer writer.Flush()
 	readVariables()
-	for _, k := range keys {
-		fmt.Printf("%s x %v\n", k, m[k])
+	var answer int
+	for br := 0; br < 1<<H; br++ {
+		for bc := 0; bc < 1<<W; bc++ {
+			clearRed()
+			for i := 0; i < H; i++ {
+				if 1<<i&br > 0 {
+					setRowRed(i)
+				}
+			}
+			for j := 0; j < W; j++ {
+				if 1<<j&bc > 0 {
+					setColRed(j)
+				}
+			}
+			k := count()
+			if k == K {
+				answer++
+			}
+		}
+	}
+	println(answer)
+}
+
+func count() int {
+	var result int
+	for i := 0; i < H; i++ {
+		for j := 0; j < W; j++ {
+			if black[i][j] && !red[i][j] {
+				result++
+			}
+		}
+	}
+	return result
+}
+
+func setRowRed(i int) {
+	for j := 0; j < W; j++ {
+		red[i][j] = true
+	}
+}
+func setColRed(j int) {
+	for i := 0; i < H; i++ {
+		red[i][j] = true
+	}
+}
+
+func clearRed() {
+	for i := 0; i < H; i++ {
+		for j := 0; j < W; j++ {
+			red[i][j] = false
+		}
 	}
 }
 
 func readVariables() {
-	N := nextInt()
-	for i := 0; i < N; i++ {
-		key := nextStr()
-		m[key]++
+	H, W, K = nextInt(), nextInt(), nextInt()
+	black = make([][]bool, H)
+	red = make([][]bool, H)
+	for i := 0; i < H; i++ {
+		black[i] = make([]bool, W)
+		red[i] = make([]bool, W)
+	}
+	for i := 0; i < H; i++ {
+		row := nextStr()
+		for j := 0; j < W; j++ {
+			black[i][j] = row[j] == '#'
+		}
 	}
 }
 
@@ -95,61 +152,4 @@ func AbsInt(x int) int {
 		return -x
 	}
 	return x
-}
-
-//ModPow calculates integer power with modulo operation
-//if modulo <= 1, it powers w/o module operation
-//if base < 0, return value might be negative too.
-func ModPow(base, exponent, modulo int) (result int) {
-	result = 1
-	for exponent > 0 {
-		if exponent%2 == 1 {
-			result *= base
-			if modulo > 1 {
-				result %= modulo
-			}
-		}
-		base *= base
-		if modulo > 1 {
-			base %= modulo
-		}
-		exponent /= 2
-	}
-	return
-}
-
-//Gcd
-func Gcd(vals ...int) (result int) {
-	if len(vals) == 0 {
-		return
-	}
-	result = vals[0]
-	for i := 1; i < len(vals); i++ {
-		result = gcd(result, vals[i])
-	}
-	return
-}
-
-func gcd(x, y int) int {
-	x, y = AbsInt(x), AbsInt(y)
-	for y > 0 {
-		x, y = y, x%y
-	}
-	return x
-}
-
-//Lcm
-func Lcm(vals ...int) (result int) {
-	if len(vals) == 0 {
-		return
-	}
-	result = vals[0]
-	for i := 1; i < len(vals); i++ {
-		result = lcm(result, vals[i])
-	}
-	return
-}
-
-func lcm(x, y int) int {
-	return x * y / gcd(x, y)
 }

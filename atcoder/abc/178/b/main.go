@@ -7,48 +7,33 @@ import (
 	"strconv"
 )
 
-var (
-	keys = []string{"AC", "WA", "TLE", "RE"}
-	m    = make(map[string]int)
-)
+var a, b, c, d, answer int
 
 func main() {
-	defer writer.Flush()
 	readVariables()
-	for _, k := range keys {
-		fmt.Printf("%s x %v\n", k, m[k])
-	}
+	answer = a * c
+	answer = MaxInt(answer, a*d)
+	answer = MaxInt(answer, b*c)
+	answer = MaxInt(answer, b*d)
+	fmt.Println(answer)
 }
 
 func readVariables() {
-	N := nextInt()
-	for i := 0; i < N; i++ {
-		key := nextStr()
-		m[key]++
-	}
+	a = nextInt()
+	b = nextInt()
+	c = nextInt()
+	d = nextInt()
 }
 
 /* Template */
 
-var (
-	scanner *bufio.Scanner
-	writer  *bufio.Writer
-)
+var scanner *bufio.Scanner
 
 func init() {
 	Max := 1001001
 	scanner = bufio.NewScanner(os.Stdin)
 	scanner.Buffer(make([]byte, 0, Max), Max)
 	scanner.Split(bufio.ScanWords)
-	writer = bufio.NewWriterSize(os.Stdout, Max)
-}
-
-func println(a ...interface{}) {
-	fmt.Fprintln(writer, a...)
-}
-
-func printf(format string, a ...interface{}) {
-	fmt.Fprintf(writer, format, a...)
 }
 
 //nextInt converts next token from stdin and returns integer value.

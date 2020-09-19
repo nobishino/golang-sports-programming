@@ -8,24 +8,26 @@ import (
 )
 
 var (
-	keys = []string{"AC", "WA", "TLE", "RE"}
-	m    = make(map[string]int)
+	L, R, d int
 )
 
 func main() {
 	defer writer.Flush()
 	readVariables()
-	for _, k := range keys {
-		fmt.Printf("%s x %v\n", k, m[k])
+	if L%d != 0 {
+		L += d - L%d
 	}
+	var answer int
+	if R >= L {
+		answer = (R-L)/d + 1
+	} else {
+		answer = 0
+	}
+	println(answer)
 }
 
 func readVariables() {
-	N := nextInt()
-	for i := 0; i < N; i++ {
-		key := nextStr()
-		m[key]++
-	}
+	L, R, d = nextInt(), nextInt(), nextInt()
 }
 
 /* Template */
@@ -95,61 +97,4 @@ func AbsInt(x int) int {
 		return -x
 	}
 	return x
-}
-
-//ModPow calculates integer power with modulo operation
-//if modulo <= 1, it powers w/o module operation
-//if base < 0, return value might be negative too.
-func ModPow(base, exponent, modulo int) (result int) {
-	result = 1
-	for exponent > 0 {
-		if exponent%2 == 1 {
-			result *= base
-			if modulo > 1 {
-				result %= modulo
-			}
-		}
-		base *= base
-		if modulo > 1 {
-			base %= modulo
-		}
-		exponent /= 2
-	}
-	return
-}
-
-//Gcd
-func Gcd(vals ...int) (result int) {
-	if len(vals) == 0 {
-		return
-	}
-	result = vals[0]
-	for i := 1; i < len(vals); i++ {
-		result = gcd(result, vals[i])
-	}
-	return
-}
-
-func gcd(x, y int) int {
-	x, y = AbsInt(x), AbsInt(y)
-	for y > 0 {
-		x, y = y, x%y
-	}
-	return x
-}
-
-//Lcm
-func Lcm(vals ...int) (result int) {
-	if len(vals) == 0 {
-		return
-	}
-	result = vals[0]
-	for i := 1; i < len(vals); i++ {
-		result = lcm(result, vals[i])
-	}
-	return
-}
-
-func lcm(x, y int) int {
-	return x * y / gcd(x, y)
 }

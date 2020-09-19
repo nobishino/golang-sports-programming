@@ -8,47 +8,54 @@ import (
 )
 
 var (
-	keys = []string{"AC", "WA", "TLE", "RE"}
-	m    = make(map[string]int)
+	N      int
+	s      string
+	answer int
+	w, r   []int
 )
 
+const red = 'R'
+const white = 'W'
+
 func main() {
-	defer writer.Flush()
 	readVariables()
-	for _, k := range keys {
-		fmt.Printf("%s x %v\n", k, m[k])
+	answer = N
+	for i := 0; i <= N; i++ {
+		cand := MaxInt(w[i], r[i])
+		answer = MinInt(cand, answer)
 	}
+	fmt.Println(answer)
 }
 
 func readVariables() {
-	N := nextInt()
-	for i := 0; i < N; i++ {
-		key := nextStr()
-		m[key]++
+	N = nextInt()
+	s = nextStr()
+	w, r = make([]int, N+1), make([]int, N+1)
+	for i := 1; i <= N; i++ {
+		w[i] = w[i-1]
+		if i-1 < N && s[i-1] == white {
+			w[i]++
+		}
+	}
+	for i := N; i >= 0; i-- {
+		if i+1 < N+1 {
+			r[i] = r[i+1]
+		}
+		if i < N && s[i] == red {
+			r[i]++
+		}
 	}
 }
 
 /* Template */
 
-var (
-	scanner *bufio.Scanner
-	writer  *bufio.Writer
-)
+var scanner *bufio.Scanner
 
 func init() {
 	Max := 1001001
 	scanner = bufio.NewScanner(os.Stdin)
 	scanner.Buffer(make([]byte, 0, Max), Max)
 	scanner.Split(bufio.ScanWords)
-	writer = bufio.NewWriterSize(os.Stdout, Max)
-}
-
-func println(a ...interface{}) {
-	fmt.Fprintln(writer, a...)
-}
-
-func printf(format string, a ...interface{}) {
-	fmt.Fprintf(writer, format, a...)
 }
 
 //nextInt converts next token from stdin and returns integer value.
